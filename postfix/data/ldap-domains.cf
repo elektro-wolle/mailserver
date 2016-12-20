@@ -1,0 +1,5 @@
+server_host = ldap
+search_base = dc=mail,dc=ideas-in-logic,dc=de
+
+query_filter = ou=%s
+result_attribute = ou

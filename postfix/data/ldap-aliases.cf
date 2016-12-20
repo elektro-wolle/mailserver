@@ -1,0 +1,8 @@
+server_host = ldap
+search_base = dc=mail,dc=ideas-in-logic,dc=de
+
+query_filter = mail=%s
+result_attribute = memberaddr
+special_result_attribute = seeAlso
+terminal_result_attribute = uid
+# leaf_result_attribute =

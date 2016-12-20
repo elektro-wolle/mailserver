@@ -1,0 +1,17 @@
+.catalog:
+    name: "Mailserver"
+    version: "1"
+    description: "full mailserver via ldap-config"
+    questions:
+     - variable: "SLAPD_DOMAIN"
+       label: "Domainname"
+       description: "FQDN of your domain"
+       required: true
+       type: "string"
+       default: "example.org"
+     - variable: "SLAPD_PASSWORD"
+       label: "Password"
+       description: "SLAPD_PASSWORD"
+       required: true
+       type: "string"
+       default: "mysecret"
