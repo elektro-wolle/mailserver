@@ -1,11 +1,9 @@
 dn: ou=mail,___BASE_DN___
-changetype: add
 objectClass: organizationalUnit
 objectClass: top
 ou: mail
 
 dn: ou=___POSTFIX_DOMAIN___,ou=mail,___BASE_DN___
-changetype: add
 objectClass: DKIM
 objectClass: organizationalUnit
 objectClass: top
@@ -30,7 +28,6 @@ ou: ___POSTFIX_DOMAIN___
 DKIMDomain: ___POSTFIX_DOMAIN___
 
 dn: cn=Wolfgang Jung,ou=___POSTFIX_DOMAIN___,ou=mail,___BASE_DN___
-changetype: add
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
