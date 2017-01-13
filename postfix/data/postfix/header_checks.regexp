@@ -1,0 +1,2 @@
+/^X-Spam-Level:.\*{9,}.*/ REJECT Spam score to high, rejecting.
+/^Received:.*by.*___DOMAIN___.*(with ESMTPSA.*)/ REPLACE Received: from [127.0.0.1] (deleted for privacy) $1

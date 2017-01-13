@@ -1,0 +1,1 @@
+/name=[^>]*\.(bat|chm|cmd|com|exe|hta|jse|scr|pif|vbe|vbs|vxd)$/ REJECT  Rule #666 We do not like Windows executables for security reason. Please do not send us executables. Thank you.

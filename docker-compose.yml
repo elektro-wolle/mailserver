@@ -6,6 +6,11 @@ services:
       - /etc/ldap
       - /var/lib/ldap
 
+  mail-data:
+    image: busybox
+    volumes:
+      - /vmail
+
   postfix-data:
     image: busybox
     volumes:
@@ -14,7 +19,7 @@ services:
   openldap-initial:
     volumes_from:
       - ldap-data
-    build: ldap-schema
+    build: openldap-initial
 
   postfix:
     build: postfix
@@ -23,8 +28,21 @@ services:
     tty: true
     links:
       - openldap:ldap
+      - dovecot:dovecot
     ports:
       - "25:25"
+      - "587:587"
+
+  dovecot:
+    build: dovecot
+    volumes_from:
+      - mail-data
+    tty: true
+    links:
+      - openldap:ldap
+    ports:
+      - "143:143"
+      - "993:993"
 
   openldap:
     image: dinkel/openldap
@@ -32,15 +50,13 @@ services:
       io.rancher.sidekicks: openldap-initial
     volumes_from:
       - ldap-data
-    links:
-      - openldap-initial
     environment:
       SLAPD_CONFIG: "${SLAPD_DOMAIN}"
       SLAPD_PASSWORD: "${SLAPD_PASSWORD}"
       SLAPD_CONFIG_PASSWORD: "${SLAPD_PASSWORD}"
       SLAPD_ADDITIONAL_SCHEMAS: ppolicy,opendkim,postfix
       SLAPD_DOMAIN: "${SLAPD_DOMAIN}"
-      depends_on:
+    depends_on:
         openldap-initial
     ports:
       - "389:389"

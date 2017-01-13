@@ -1,5 +1,9 @@
-server_host = ldap
-search_base = dc=mail,dc=ideas-in-logic,dc=de
+server_host = openldap
+search_base = ___BASE_DN___
+
+bind = yes
+bind_dn = ___POSTFIX_LDAP_USER___
+bind_pw = ___POSTFIX_LDAP_PASS___
 
 query_filter = mail=%s
 result_attribute = memberaddr

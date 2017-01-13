@@ -1,0 +1,4 @@
+ENABLED=1
+OPTIONS="-x --virtual-config-dir=/var/lib/spamassassin/%u/spamassassin -c -u debian-spamd --max-children 2 --socketpath=/var/run/spamassassin/spamd.sock --socketowner=spamd --socketgroup=spamd --socketmode=0660"
+PIDFILE="/var/run/spamd.pid"
+CRON=1
