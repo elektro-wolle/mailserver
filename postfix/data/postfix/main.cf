@@ -3,7 +3,7 @@ biff = no
 broken_sasl_auth_clients = yes
 config_directory = /etc/postfix
 disable_vrfy_command = yes
-header_checks = regexp:/etc/postfix/header_checks
+header_checks = regexp:/etc/postfix/header_checks.regexp
 inet_interfaces = all
 inet_protocols = ipv4
 mailbox_size_limit = 0
@@ -11,11 +11,11 @@ message_size_limit = 20480000
 milter_connect_macros = j {daemon_name} v {if_name} _
 milter_default_action = tempfail
 milter_protocol = 2
-mime_header_checks = regexp:/etc/postfix/mime_header_checks.regexp, regexp:/etc/postfix/header_checks
+mime_header_checks = regexp:/etc/postfix/mime_header_checks.regexp, regexp:/etc/postfix/header_checks.regexp
 mydestination = localhost
 mydomain = localhost
 mynetworks = 127.0.0.0/8
-non_smtpd_milters = unix:/opendkim/opendkim.sock,unix:/opendmarc/opendmarc.sock
+non_smtpd_milters = unix:/milters/opendkim/opendkim.sock,unix:/milters/opendmarc/opendmarc.sock
 policy-spf_time_limit = 3600s
 postscreen_access_list = permit_mynetworks
 postscreen_bare_newline_action = ignore
@@ -47,7 +47,10 @@ smtpd_banner = $myhostname ESMTP $mail_name
 smtpd_client_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unknown_client, permit
 smtpd_helo_required = yes
 smtpd_helo_restrictions = permit_sasl_authenticated, reject_invalid_hostname, reject_unknown_hostname, reject_non_fqdn_hostname
-smtpd_milters = unix:/opendkim/opendkim.sock,unix:/opendmarc/opendmarc.sock,unix:/clamav/clamav.sock,unix:/spamass/spamass.sock
+smtpd_milters = unix:/milters/opendkim/opendkim.sock,unix:/milters/opendmarc/opendmarc.sock,unix:/milters/spamass/spamass.sock
+
+# unix:/milters/clamav/clamav.sock,
+
 smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_invalid_hostname, reject_unknown_hostname, reject_non_fqdn_hostname, reject_non_fqdn_sender, reject_unknown_sender_domain, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_policy_service unix:private/policy-spf, permit
 # smtpd_sasl_auth_enable = yes
 # smtpd_sasl_path = private/auth
@@ -66,14 +69,14 @@ smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, rej
 # smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_scache
 # smtpd_use_tls = yes
 # tls_preempt_cipherlist = yes
-virtual_alias_maps = $alias_maps
+virtual_alias_maps = ldap:/etc/postfix/ldap-aliases.cf
 
 mynetworks = 127.0.0.0/8
 
-alias_maps = ldap:/etc/postfix/ldap-aliases.cf
+# alias_maps = ldap:/etc/postfix/ldap-aliases.cf
 mailbox_transport = lmtp:inet:dovecot:10024
 virtual_transport = lmtp:inet:dovecot:10024
-virtual_mailbox_domains = ldap:/etc/postfix/ldap-domains.cf
+virtual_alias_domains = ldap:/etc/postfix/ldap-domains.cf
 
 # smtp_tls_cert_file = /etc/ssl/private/ideas-in-logic.de.chain.crt.pem
 # smtp_tls_key_file = /etc/ssl/private/ideas-in-logic.de-private-key.pem

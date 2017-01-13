@@ -24,7 +24,7 @@ OPTIONS="-u spamass-milter -m -I -- -U /var/run/spamassassin/spamd.sock"
 # default. You can override them by uncommenting and changing them
 # here.
 ######################################
-SOCKET="/var/spool/postfix/milter/spamass/spamass.sock"
-SOCKETOWNER="postfix:postfix"
+SOCKET="/var/spool/postfix/milters/spamass/spamass.sock"
+SOCKETOWNER="spamass-milter:postfix"
 SOCKETMODE="0660"
 ######################################

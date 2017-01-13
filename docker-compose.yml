@@ -15,11 +15,28 @@ services:
     image: busybox
     volumes:
       - /var/spool/postfix
+      - /var/lib/spamassassin
+      - /var/lib/clamav
+
+  postfix-base:
+    build: postfix-base
+    image: postfix-base:latest
+    volumes_from:
+      - postfix-data
+    tty: false
+
+  dovecot-base:
+    build: dovecot-base
+    image: dovecot-base:latest
+    tty: false
 
   openldap-initial:
     volumes_from:
       - ldap-data
     build: openldap-initial
+    environment:
+      POSTFIX_DOMAIN: "${SLAPD_DOMAIN}"
+      BASE_DN: "${BASE_DN}"
 
   postfix:
     build: postfix
@@ -32,6 +49,11 @@ services:
     ports:
       - "25:25"
       - "587:587"
+    environment:
+      BASE_DN: "${BASE_DN}"
+      POSTFIX_DOMAIN: "${SLAPD_DOMAIN}"
+      POSTFIX_LDAP_USER: "cn=Admin"
+      POSTFIX_LDAP_PASS: "${SLAPD_PASSWORD}"
 
   dovecot:
     build: dovecot
@@ -57,6 +79,6 @@ services:
       SLAPD_ADDITIONAL_SCHEMAS: ppolicy,opendkim,postfix
       SLAPD_DOMAIN: "${SLAPD_DOMAIN}"
     depends_on:
-        openldap-initial
+      - openldap-initial
     ports:
       - "389:389"
