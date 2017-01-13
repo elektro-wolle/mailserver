@@ -4,12 +4,6 @@ echo starting dovecot ${POSTFIX_DOMAIN}
 if [ -f /etc/first_start ]; then
     echo fixing environment
 
-    BASE_DN=""
-    IFS="."; declare -a dc_parts=(${POSTFIX_DOMAIN}); unset IFS
-    for dc_part in "${dc_parts[@]}"; do
-        BASE_DN="${BASE_DN},dc=${dc_part}"
-    done
-    BASE_DN="${BASE_DN:1}"
 
     find /etc -type f -print0 | \
         xargs -0 perl -p -i -e \

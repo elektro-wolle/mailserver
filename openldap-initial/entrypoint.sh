@@ -7,4 +7,14 @@ if [ ! -f /etc/ldap/schema/opendkim.ldif ]; then
     mkdir -p /etc/ldap/prepopulate
     echo "adding sample-data"
     cp -f /tmp/data/sample/*.ldif /etc/ldap/prepopulate
+
+
+    find /etc/ldap -type f -print0 | \
+        xargs -0 perl -p -i -e \
+        "s/___POSTFIX_DOMAIN___/${POSTFIX_DOMAIN}/g;
+         s/___BASE_DN___/${BASE_DN}/g;
+         s/___POSTFIX_LDAP_USER___/${POSTFIX_LDAP_USER},${BASE_DN}/g;
+         s/___POSTFIX_LDAP_PASS___/${POSTFIX_LDAP_PASS}/g;
+        "
+
 fi
