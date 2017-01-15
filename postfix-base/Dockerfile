@@ -5,3 +5,5 @@ RUN apt-get update && \
             postfix postfix-ldap rsyslog less telnet vim opendkim opendmarc \
             spamass-milter bind9 postfix-policyd-spf-python \
             clamav clamav-daemon clamav-milter psmisc ldap-utils sasl2-bin
+
+# RUN freshclam && freshclam

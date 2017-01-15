@@ -64,7 +64,6 @@ services:
       - openldap:ldap
     ports:
       - "143:143"
-      - "993:993"
     environment:
       BASE_DN: "${BASE_DN}"
       DOVECOT_LDAP_USER: "cn=Admin"

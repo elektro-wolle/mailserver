@@ -33,7 +33,9 @@ postscreen_disable_vrfy_command = $disable_vrfy_command
 postscreen_discard_ehlo_keyword_address_maps = $smtpd_discard_ehlo_keyword_address_maps
 postscreen_discard_ehlo_keywords = $smtpd_discard_ehlo_keywords
 postscreen_dnsbl_action = enforce
-postscreen_dnsbl_sites = zen.spamhaus.org*2 bl.spamcop.net*1 cbl.abuseat.org*1 multi.uribl.com*1 multi.surbl.org*1 b.barracudacentral.org*1
+postscreen_dnsbl_sites = zen.spamhaus.org*2 bl.spamcop.net*1 cbl.abuseat.org*1 multi.uribl.com*1 multi.surbl.org*1
+# b.barracudacentral.org*1 -> requires approval
+
 postscreen_dnsbl_threshold = 2
 postscreen_dnsbl_ttl = 1h
 postscreen_enforce_tls = $smtpd_enforce_tls
