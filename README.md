@@ -3,7 +3,7 @@
 **WARNING:**
 > This is currently work in progress. The server(s) are not protected via TLS and 
 > both LDAP clients (dovecot and postfix) authenticate currently as the admin user.
-> Unless these issues were solved, this system not be reachable by a public IP Address
+> Unless these issues were solved, this system must not be reachable by a public IP Address
  
 Aim of the project is a full fledged email subsystem, that can be deployed in Ranger and 
 can be administered via LDAP.
