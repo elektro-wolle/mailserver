@@ -65,6 +65,10 @@ services:
     ports:
       - "143:143"
       - "993:993"
+    environment:
+      BASE_DN: "${BASE_DN}"
+      DOVECOT_LDAP_USER: "cn=Admin"
+      DOVECOT_LDAP_PASS: "${SLAPD_PASSWORD}"
 
   openldap:
     image: dinkel/openldap
