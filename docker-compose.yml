@@ -1,5 +1,17 @@
 version: '2'
 services:
+  cert-data:
+    build: cert-data
+    volumes:
+      - /etc/private/ssl
+
+  cert:
+    build: cert
+    volumes_from:
+      - cert-data
+    environment:
+      SERVERNAME: "${SERVERNAME}"
+
   ldap-data:
     image: busybox
     volumes:
@@ -23,51 +35,75 @@ services:
     image: postfix-base:latest
     volumes_from:
       - postfix-data
+    depends_on:
+      - postfix-data
     tty: false
 
   dovecot-base:
     build: dovecot-base
     image: dovecot-base:latest
     tty: false
+    depends_on:
+      - mail-data
 
   openldap-initial:
+    build: openldap-initial
     volumes_from:
       - ldap-data
-    build: openldap-initial
     environment:
-      POSTFIX_DOMAIN: "${SLAPD_DOMAIN}"
+      DEFAULT_DOMAIN: "${DEFAULT_DOMAIN}"
+      DEFAULT_USER: "${DEFAULT_USER}"
       BASE_DN: "${BASE_DN}"
+      DEFAULT_CN: "${DEFAULT_CN}"
+      DEFAULT_SN: "${DEFAULT_SN}"
 
   postfix:
     build: postfix
     volumes_from:
       - postfix-data
+      - cert-data
     tty: true
     links:
       - openldap:ldap
       - dovecot:dovecot
+    depends_on:
+      - openldap
+      - cert
+      - postfix-data
+      - postfix-base
     ports:
       - "25:25"
       - "587:587"
     environment:
       BASE_DN: "${BASE_DN}"
-      POSTFIX_DOMAIN: "${SLAPD_DOMAIN}"
+      POSTFIX_DOMAIN: "${DEFAULT_DOMAIN}"
+      POSTMASTER: "${POSTMASTER}"
       POSTFIX_LDAP_USER: "cn=Admin"
       POSTFIX_LDAP_PASS: "${SLAPD_PASSWORD}"
+      SERVERNAME: "${SERVERNAME}"
+      POSTMASTER: "${POSTMASTER}"
 
   dovecot:
     build: dovecot
     volumes_from:
       - mail-data
+      - cert-data
     tty: true
+    depends_on:
+      - mail-data
+      - openldap
+      - cert
+      - dovecot-base
     links:
       - openldap:ldap
     ports:
       - "143:143"
+      - "993:993"
     environment:
       BASE_DN: "${BASE_DN}"
       DOVECOT_LDAP_USER: "cn=Admin"
       DOVECOT_LDAP_PASS: "${SLAPD_PASSWORD}"
+      SERVERNAME: "${SERVERNAME}"
 
   openldap:
     image: dinkel/openldap
@@ -75,6 +111,7 @@ services:
       io.rancher.sidekicks: openldap-initial
     volumes_from:
       - ldap-data
+      - cert-data
     environment:
       SLAPD_CONFIG: "${SLAPD_DOMAIN}"
       SLAPD_PASSWORD: "${SLAPD_PASSWORD}"
@@ -83,5 +120,6 @@ services:
       SLAPD_DOMAIN: "${SLAPD_DOMAIN}"
     depends_on:
       - openldap-initial
+      - cert
     ports:
       - "389:389"

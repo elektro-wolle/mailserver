@@ -6,15 +6,14 @@ if [ ! -f /etc/ldap/schema/opendkim.ldif ]; then
     cp -f /tmp/data/*.ldif /etc/ldap/schema/
     mkdir -p /etc/ldap/prepopulate
     echo "adding sample-data"
-    cp -f /tmp/data/sample/*.ldif /etc/ldap/prepopulate
-
-
-    find /etc/ldap -type f -print0 | \
-        xargs -0 perl -p -i -e \
-        "s/___POSTFIX_DOMAIN___/${POSTFIX_DOMAIN}/g;
-         s/___BASE_DN___/${BASE_DN}/g;
-         s/___POSTFIX_LDAP_USER___/${POSTFIX_LDAP_USER},${BASE_DN}/g;
-         s/___POSTFIX_LDAP_PASS___/${POSTFIX_LDAP_PASS}/g;
-        "
-
+    cd /tmp/data/sample/
+    for d in *.ldif; do
+        cat $d |
+            sed "s/___DEFAULT_DOMAIN___/${DEFAULT_DOMAIN}/g" |
+            sed "s/___DEFAULT_USER___/${DEFAULT_USER}/g" |
+            sed "s/___BASE_DN___/${BASE_DN}/g" |
+            sed "s/___SERVERNAME___/${SERVERNAME}/g" |
+            sed "s/___DEFAULT_CN___/${DEFAULT_CN}/g" |
+            sed "s/___DEFAULT_SN___/${DEFAULT_SN}/g" > /etc/ldap/prepopulate/$d
+    done
 fi

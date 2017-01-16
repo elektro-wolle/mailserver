@@ -5,13 +5,39 @@
     questions:
      - variable: "SLAPD_DOMAIN"
        label: "Domainname"
-       description: "FQDN of your domain"
+       description: "FQDN of your LDAP domain"
        required: true
        type: "string"
        default: "example.org"
+     - variable: "BASE_DN"
+       label: "Domainname"
+       description: "Base DN of your LDAP domain, must match SLAPD_DOMAIN"
+       required: true
+       type: "string"
+       default: "dc=org,dc=example"
      - variable: "SLAPD_PASSWORD"
        label: "Password"
-       description: "SLAPD_PASSWORD"
+       description: "Password of the LDAP Admin User"
        required: true
        type: "string"
        default: "mysecret"
+     - variable: "DEFAULT_DOMAIN"
+       label: "Default domain"
+       description: "Default domain for mail"
+       required: true
+       type: "string"
+       default: "example.org"
+     - variable: "POSTMASTER"
+       label: "Postmaster"
+       description: "Email address of the postmaster"
+       required: true
+       type: "string"
+       default: "admin@example.org"
+     - variable: "Hostname"
+       label: "Hostname"
+       description: "External DNS name of this server"
+       required: true
+       type: "string"
+       default: "mx.example.org"
+
+

@@ -6,5 +6,5 @@ RUN mv /etc/dovecot /etc/dovecot.orig && \
     touch /etc/first_start
 ADD entrypoint.sh /
 ADD data /etc
-EXPOSE 143
+EXPOSE 143 993
 ENTRYPOINT ["/entrypoint.sh"]

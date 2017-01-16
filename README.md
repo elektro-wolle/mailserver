@@ -10,27 +10,13 @@ can be administered via LDAP.
 
 Open issues:
 - [ ] additional LDAP User for querying database
-- [ ] shared `dh-2048.pem` for all components 
-- [ ] TLS for imap and smtp via let's encrypt
-- [ ] TLS for lmtps with local CA, see https://sys4.de/en/blog/2014/11/17/sicheres-lmtp-mit-starttls-in-dovecot/
-- [ ] TLS for ldap
-- [ ] enable ldap-tls in postfix `saslauthd.conf` and `dovecot-ldap.conf`
-- [ ] reload postfix and dovecot if new certificates were present
 - [ ] description of LDAP Schema
-- [ ] change project structure to make it rancher-catalog compatible
-- [ ] automatically add postmaster@, abuse@, webmaster@, admin@ and root@ to all local domains
-- [ ] ensure that `From: ` address is an authenticated mail alias of the user
-- [ ] make mail unique within LDAP (or not?)
-- [ ] add clamav-milter (ensure that freshclam is started first) 
-- [ ] allow DKIM on per-user basis
-- [ ] use own bind9 for the DNSBL in postfix (without breaking the name resolving of docker)
-- [ ] allow optional solr reference for `fts_solr`
-- [ ] add opendmarc sql-database
-- [ ] add automatic sending of dmarc reports
-- [ ] save mails of each user with different user-id in filesystem
+- [x] shared `dh-2048.pem` for all components 
+- [x] TLS for imap and smtp 
+- [x] automatically add postmaster@, abuse@, webmaster@, admin@ and root@ to all local domains
+- [x] add clamav-milter (ensure that freshclam is started first) 
 - [ ] Imap shared folders
-- [ ] split postfix into MDA and MTA 
-- [ ] cleanup
+- [ ] allow optional solr reference for `fts_solr`
 - [x] postscreen for incoming mail
 - [x] LDAP authentication for IMAP and SMTP (submission)
 - [x] Mail aliases in LDAP
@@ -39,13 +25,32 @@ Open issues:
 - [x] single dovecot instance for local mail storage
 - [x] add opendmarc
 - [x] add clamav
+- [ ] ensure that `From: ` address is an authenticated mail alias of the user
+- [ ] change project structure to make it rancher-catalog compatible
+- [ ] add opendmarc sql-database
+- [ ] add automatic sending of dmarc reports
+- [ ] split postfix into MDA and MTA 
+- [ ] make mail unique within LDAP (or not?)
+- [ ] TLS for ldap
+- [ ] enable ldap-tls in postfix `saslauthd.conf` and `dovecot-ldap.conf`
+- [ ] TLS for lmtps with local CA, see https://sys4.de/en/blog/2014/11/17/sicheres-lmtp-mit-starttls-in-dovecot/
+- [ ] save mails of each user with different user-id in filesystem
+- [ ] allow DKIM on per-user basis
+- [ ] use own bind9 for the DNSBL in postfix (without breaking the name resolving of docker)
+- [ ] cleanup
 
 ## Build
 
 ```bash
-export SLAPD_DOMAIN=i-i-l.de
+export SLAPD_DOMAIN='i-i-l.de'
 export SLAPD_PASSWORD=ulterrednEsSer87
 export BASE_DN='dc=i-i-l,dc=de'
+export DEFAULT_DOMAIN='i-i-l.de'
+export DEFAULT_USER='wolle'
+export DEFAULT_CN='Wolfgang Jung'
+export DEFAULT_SN='Jung'
+export SERVERNAME="localdock"
+export POSTMASTER="${DEFAULT_USER}@localhost"
 docker-compose build
 docker-compose up
 ```

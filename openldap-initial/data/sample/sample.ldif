@@ -3,7 +3,7 @@ objectClass: organizationalUnit
 objectClass: top
 ou: mail
 
-dn: ou=___POSTFIX_DOMAIN___,ou=mail,___BASE_DN___
+dn: ou=___DEFAULT_DOMAIN___,ou=mail,___BASE_DN___
 objectClass: DKIM
 objectClass: organizationalUnit
 objectClass: top
@@ -24,19 +24,18 @@ DKIMKey:: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlDWGdJQkFBS0JnUURyYW
  SsvRVlIWi90bTVNVnlTOHZ6Yko5dHlmSk0wdVdXSApNV3c1UC8xL3VQR1pseWxycjlKWkJPckJq
  YTl5OHQyVm11b1YvTVlBTU5EOXlnPT0KLS0tLS1FTkQgUlNBIFBSSVZBVEUgS0VZLS0tLS0=
 DKIMSelector: mail
-ou: ___POSTFIX_DOMAIN___
-DKIMDomain: ___POSTFIX_DOMAIN___
+ou: ___DEFAULT_DOMAIN___
+DKIMDomain: ___DEFAULT_DOMAIN___
 
-dn: cn=Wolfgang Jung,ou=___POSTFIX_DOMAIN___,ou=mail,___BASE_DN___
+dn: cn=___DEFAULT_CN___,ou=___DEFAULT_DOMAIN___,ou=mail,___BASE_DN___
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
-cn: Wolfgang Jung
-sn: Jung
-mail: w.jung@___POSTFIX_DOMAIN___
-mail: root@___POSTFIX_DOMAIN___
-uid: wolle@localhost
+cn: ___DEFAULT_CN___
+sn: ___DEFAULT_SN___
+mail: ___DEFAULT_USER___@___DEFAULT_DOMAIN___
+uid: ___DEFAULT_USER___@localhost
 userPassword:: e3NzaGF9K202dUVLZE0zaGNHa1Z1dFozeDVZV0xlQ1pPTDRUUGs4eFlSZUE9P
  Q==
 

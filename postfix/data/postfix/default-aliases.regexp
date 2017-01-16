@@ -1,0 +1,4 @@
+/^postmaster@.*$/   ___DEFAULT_USER___@localhost
+/^hostmaster@.*$/   ___DEFAULT_USER___@localhost
+/^webmaster@.*$/    ___DEFAULT_USER___@localhost
+/^abuse@.*$/        ___DEFAULT_USER___@localhost

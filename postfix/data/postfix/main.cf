@@ -49,41 +49,34 @@ smtpd_banner = $myhostname ESMTP $mail_name
 smtpd_client_restrictions = permit_sasl_authenticated, permit_mynetworks, reject_unknown_client, permit
 smtpd_helo_required = yes
 smtpd_helo_restrictions = permit_sasl_authenticated, reject_invalid_hostname, reject_unknown_hostname, reject_non_fqdn_hostname
-smtpd_milters = unix:/milters/opendkim/opendkim.sock,unix:/milters/opendmarc/opendmarc.sock,unix:/milters/spamass/spamass.sock
-
-# unix:/milters/clamav/clamav.sock,
+smtpd_milters = unix:/milters/opendkim/opendkim.sock,unix:/milters/opendmarc/opendmarc.sock,unix:/milters/spamass/spamass.sock,unix:/milters/clamav/clamav.sock,
 
 smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_invalid_hostname, reject_unknown_hostname, reject_non_fqdn_hostname, reject_non_fqdn_sender, reject_unknown_sender_domain, reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_policy_service unix:private/policy-spf, permit
-# smtpd_sasl_auth_enable = yes
-# smtpd_sasl_path = private/auth
-# smtpd_sasl_security_options = noanonymous, noplaintext
-# smtpd_sasl_tls_security_options = noanonymous
-# smtpd_sasl_type = dovecot
 # smtpd_sender_restrictions = texthash:/etc/postfix/access
-# smtpd_tls_auth_only = yes
-# smtpd_tls_eecdh_grade = strong
-# smtpd_tls_exclude_ciphers = aNULL,MD5,RC4,DES
-# smtpd_tls_key_file = /etc/ssl/private/ideas-in-logic.de-private-key.pem
-# smtpd_tls_mandatory_ciphers = high
-# smtpd_tls_mandatory_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
-# smtpd_tls_protocols = !SSLv2
-# smtpd_tls_received_header = yes
-# smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_scache
-# smtpd_use_tls = yes
-# tls_preempt_cipherlist = yes
-virtual_alias_maps = ldap:/etc/postfix/ldap-aliases.cf
+smtpd_tls_auth_only = yes
+smtpd_tls_eecdh_grade = strong
+smtpd_tls_exclude_ciphers = aNULL,MD5,RC4,DES
+smtpd_tls_mandatory_ciphers = high
+smtpd_tls_mandatory_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
+smtpd_tls_protocols = !SSLv2
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_scache
+smtpd_use_tls = yes
+tls_preempt_cipherlist = yes
 
 mynetworks = 127.0.0.0/8
 
 # alias_maps = ldap:/etc/postfix/ldap-aliases.cf
 mailbox_transport = lmtp:inet:dovecot:10024
 virtual_transport = lmtp:inet:dovecot:10024
-virtual_alias_domains = ldap:/etc/postfix/ldap-domains.cf
+virtual_mailbox_domains = ldap:/etc/postfix/ldap-domains.cf
+virtual_alias_maps = regexp:/etc/postfix/default-aliases.regexp ldap:/etc/postfix/ldap-aliases.cf
 
-# smtp_tls_cert_file = /etc/ssl/private/ideas-in-logic.de.chain.crt.pem
-# smtp_tls_key_file = /etc/ssl/private/ideas-in-logic.de-private-key.pem
-# smtpd_tls_cert_file = $smtp_tls_cert_file
-# smtpd_tls_dh1024_param_file = /var/spool/postfix/etc/dh_2048.pem/dh_2048.pem
+smtp_tls_cert_file = /etc/private/ssl/cert.pem
+smtp_tls_key_file = /etc/private/ssl/key.pem
+smtpd_tls_cert_file = $smtp_tls_cert_file
+smtpd_tls_key_file = $smtp_tls_key_file
+smtpd_tls_dh1024_param_file = /etc/private/ssl/dh_2048.pem
 
 myhostname = ___DOMAIN___
 myorigin = ___DOMAIN___
