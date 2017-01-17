@@ -1,55 +1,31 @@
 version: '2'
 services:
-  cert-data:
-    build: cert-data
-    volumes:
-      - /etc/private/ssl
-
   cert:
     build: cert
-    volumes_from:
-      - cert-data
+    volumes:
+      - cert-data:/etc/private/ssl
     environment:
       SERVERNAME: "${SERVERNAME}"
-
-  ldap-data:
-    image: busybox
-    volumes:
-      - /etc/ldap
-      - /var/lib/ldap
-
-  mail-data:
-    image: busybox
-    volumes:
-      - /vmail
-
-  postfix-data:
-    image: busybox
-    volumes:
-      - /var/spool/postfix
-      - /var/lib/spamassassin
-      - /var/lib/clamav
 
   postfix-base:
     build: postfix-base
     image: postfix-base:latest
-    volumes_from:
-      - postfix-data
-    depends_on:
-      - postfix-data
+    volumes:
+      - postfix-data-spool:/var/spool/postfix
+      - postfix-data-sa:/var/lib/spamassassin
+      - postfix-data-clamav:/var/lib/clamav
     tty: false
 
   dovecot-base:
     build: dovecot-base
     image: dovecot-base:latest
     tty: false
-    depends_on:
-      - mail-data
 
   openldap-initial:
     build: openldap-initial
-    volumes_from:
-      - ldap-data
+    volumes:
+      - ldap-data-etc:/etc/ldap
+      - ldap-data:/var/lib/ldap
     environment:
       DEFAULT_DOMAIN: "${DEFAULT_DOMAIN}"
       DEFAULT_USER: "${DEFAULT_USER}"
@@ -59,9 +35,11 @@ services:
 
   postfix:
     build: postfix
-    volumes_from:
-      - postfix-data
-      - cert-data
+    volumes:
+      - cert-data:/etc/private/ssl
+      - postfix-data-spool:/var/spool/postfix
+      - postfix-data-sa:/var/lib/spamassassin
+      - postfix-data-clamav:/var/lib/clamav
     tty: true
     links:
       - openldap:ldap
@@ -69,8 +47,6 @@ services:
     depends_on:
       - openldap
       - cert
-      - postfix-data
-      - postfix-base
     ports:
       - "25:25"
       - "587:587"
@@ -85,12 +61,11 @@ services:
 
   dovecot:
     build: dovecot
-    volumes_from:
-      - mail-data
-      - cert-data
+    volumes:
+      - cert-data:/etc/private/ssl
+      - mail-data:/vmail
     tty: true
     depends_on:
-      - mail-data
       - openldap
       - cert
       - dovecot-base
@@ -109,9 +84,10 @@ services:
     image: dinkel/openldap
     labels:
       io.rancher.sidekicks: openldap-initial
-    volumes_from:
-      - ldap-data
-      - cert-data
+    volumes:
+      - ldap-data-etc:/etc/ldap
+      - ldap-data:/var/lib/ldap
+      - cert-data:/etc/private/ssl
     environment:
       SLAPD_CONFIG: "${SLAPD_DOMAIN}"
       SLAPD_PASSWORD: "${SLAPD_PASSWORD}"
@@ -123,3 +99,13 @@ services:
       - cert
     ports:
       - "389:389"
+
+volumes:
+  cert-data:
+  ldap-data:
+  ldap-data-etc:
+  mail-data:
+  postfix-data-spool:
+  postfix-data-sa:
+  postfix-data-clamav:
+
