@@ -16,28 +16,34 @@ Open issues:
 - [x] automatically add postmaster@, abuse@, webmaster@, admin@ and root@ to all local domains
 - [x] add clamav-milter (ensure that freshclam is started first) 
 - [ ] Imap shared folders
-- [ ] allow optional solr reference for `fts_solr`
 - [x] postscreen for incoming mail
 - [x] LDAP authentication for IMAP and SMTP (submission)
 - [x] Mail aliases in LDAP
 - [x] DKIM signature with private key stored in LDAP
-- [x] Allow multiple instances of postfix
 - [x] single dovecot instance for local mail storage
 - [x] add opendmarc
 - [x] add clamav
+- [ ] deploy to rancher (using private registry)
+
+Nice to have:
 - [ ] ensure that `From: ` address is an authenticated mail alias of the user
 - [ ] change project structure to make it rancher-catalog compatible
 - [ ] add opendmarc sql-database
 - [ ] add automatic sending of dmarc reports
-- [ ] split postfix into MDA and MTA 
-- [ ] make mail unique within LDAP (or not?)
+- [ ] allow optional solr reference for `fts_solr`
+- [ ] Allow multiple instances of postfix
+
+Not really needed:
+- [ ] split postfix into MDA and MTA
 - [ ] TLS for ldap
 - [ ] enable ldap-tls in postfix `saslauthd.conf` and `dovecot-ldap.conf`
 - [ ] TLS for lmtps with local CA, see https://sys4.de/en/blog/2014/11/17/sicheres-lmtp-mit-starttls-in-dovecot/
 - [ ] save mails of each user with different user-id in filesystem
 - [ ] allow DKIM on per-user basis
-- [ ] use own bind9 for the DNSBL in postfix (without breaking the name resolving of docker)
-- [ ] cleanup
+
+Discussion Backlog:
+- [ ] make mail unique within LDAP (or not?)
+- [ ] use own bind9 for the DNSBL in postfix (without breaking the name resolving of docker, )
 
 ## Build
 
